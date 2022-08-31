@@ -1,9 +1,9 @@
 public class Item {
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
     private int stock;
-    private int price;
-    private int discount;
+    private final int price;
+    private final int discount;
 
     public Item(int id, String name, int stock, int price, int discount) {
         this.id = id;
@@ -12,53 +12,27 @@ public class Item {
         this.price = price;
         this.discount = discount;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public int getStock() {
-        return stock;
-    }
 
     public int getPrice() {
         return price;
     }
     public int getPriceAfterDiscount(){
-        return price*(1-discount);
+        return price*(100-discount)/100;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
 
     public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
 
-    public void setStock(int stock) {
-        if (stock<0){
-            System.out.println("stock cant go in negative");
-        }
-        else{
-            this.stock = stock;
-        }
+    public void addToStock(int addedUnits) {
+        stock=stock+addedUnits;
     }
     public void decrementStock(){
         stock--;
@@ -72,10 +46,7 @@ public class Item {
         }
     }
     public boolean isEnoughInStock(int num){
-        if (num<=stock){
-            return true;
-        }
-        else return false;
+        return num <= stock;
     }
     public void displayItemDetails(){
         System.out.println("ID: "+id+" Name: "+name+" Price: "+price+" Available: "+stock+" Discount: "+discount);

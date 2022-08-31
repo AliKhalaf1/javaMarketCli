@@ -17,7 +17,6 @@ public class shop {
         itemsList.add(new Item(numberOfItems,name,stock,price,discount));
         numberOfItems++;
     }
-    private void displayAllUsersDetails(){}
     private void displaySingleUserDetails(User user){
         user.getUserDetail();
     }
@@ -43,13 +42,24 @@ public class shop {
             System.out.println("Not enough in stock");
         }
     }
-    private void editCart(){
-
+    private void removeFromUsersCart(User user,Item item,int numberOfUnitsRemoved) {
+        if (user.getItemCount(item)==0){
+            System.out.println("You don't have that item in your cart");
+        } else if (numberOfUnitsRemoved>user.getItemCount(item)){
+            System.out.println("You don't have that many in cart");
+        } else{
+            user.removeFromCart(item,numberOfUnitsRemoved);
+            item.addToStock(numberOfUnitsRemoved);
+            System.out.println("Done");
+        }
     }
     private void displayItems(){
         for (Item item:itemsList) {
             item.displayItemDetails();
         }
+    }
+    private void displayTotalPrice(User user){
+        user.displayTotalCartPrice();
     }
 
     public void mainShop(){
@@ -65,7 +75,7 @@ public class shop {
         int i =4;
         while (i!=0){
 
-            System.out.println("Which user");
+            System.out.println("Pick User: ");
             i = in.nextInt();
             while (i>=numberOfUsers){
                 System.out.println("No user found try again");
@@ -77,7 +87,7 @@ public class shop {
             System.out.println("pick 0 to exit");
             System.out.println("pick 1 to insert in cart");
             System.out.println("pick 2 to insert a group to cart");
-            System.out.println("pick 3 to edit cart");
+            System.out.println("pick 3 to remove from cart");
             System.out.println("pick 4 to show your cart details");
             System.out.println("pick 5 to show price");
             i = in.nextInt();
@@ -85,22 +95,41 @@ public class shop {
                 System.out.println("Which product do you want to add to (pick id)");
                 displayItems();
                 i = in.nextInt();
+                while (i>=numberOfItems){
+                    System.out.println("item doesn't exist");
+                    i = in.nextInt();
+                }
                 insertOneItemIntoUserCart(currentUser,itemsList.get(i));
             }else if (i==2) {
                 System.out.println("Which product do you want to add to (pick id)");
                 displayItems();
                 i = in.nextInt();
+                while (i>=numberOfItems){
+                    System.out.println("item doesn't exist");
+                    i = in.nextInt();
+                }
                 int productToBeAdded = i;
                 System.out.println("How many units to be added");
                 i = in.nextInt();
                 insertSeveralItemsIntoCart(currentUser,itemsList.get(productToBeAdded),i);
             }else if (i==3) {
-
+                System.out.println("Which product do you want to remove from cart");
+                displaySingleUserDetails(currentUser);
+                i = in.nextInt();
             }else if (i==4) {
-               displaySingleUserDetails(currentUser);
-
+                displaySingleUserDetails(currentUser);
+                System.out.println("Which item do you want to remove from? ");
+                i = in.nextInt();
+                while (i>=numberOfItems){
+                    System.out.println("item doesn't exist");
+                    i = in.nextInt();
+                }
+                int idOfProductToBeRemoved = i;
+                System.out.println("how many to be removed? ");
+                i = in.nextInt();
+                removeFromUsersCart(currentUser,itemsList.get(idOfProductToBeRemoved),i);
             }else if (i==5) {
-
+                displayTotalPrice(currentUser);
             }else {
                 System.out.println(":/");
             }
